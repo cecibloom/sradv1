@@ -164,10 +164,14 @@ int main(int argc, char *argv []){
         
     while (fgets(line, 1024, infileconfig) != NULL) {
         if (line[0] == '#') {
-            strtok(line, " \t\n");
-        }else{ 
-            if (strtok(line, " \t\n") != 0) 
-                numApprox++;
+            continue;
+        } else { 
+            if (!strcmp(line, "\n") || strcmp(line,"\r\n")){//strcmp verifies line has more than only \n
+                if (strtok(line, " \t\n") != 0) 
+                    numApprox++;
+            } else {
+                continue;
+            }
         }
     }
     rewind(infileconfig);
@@ -191,11 +195,11 @@ int main(int argc, char *argv []){
         if (strtok(line, " \t\n") == NULL) continue; 
         
         if (line[0] == '#') {
-            strtok(line, " \t\n");
-        }else{ 
+            continue;
+        } else  if ( i < numApprox ) { 
             int loop = atoi(strtok(NULL, " ,\t\n")); 
             if (loop <= 0){
-                printf("Error: Parameter 'Number of iterations' must be greather than 0\n");
+                printf("Error: Parameter 'Number of iterations' must be greater than 0\n");
                 return 0;
             }
             loops[i] = loop;
@@ -248,7 +252,7 @@ int main(int argc, char *argv []){
     
     while (fgets(line, 1024, infile) != NULL && i < 3) {
         if (line[0] == '#') {
-            strtok(line, " \t\n");
+            continue;
         } else {
             //The rows and columns are specified in the line # 1
             if (i == 1){
@@ -256,8 +260,8 @@ int main(int argc, char *argv []){
                 const char* val2 = strtok(NULL, " \t");
                 image_ori_cols = atoi(val1);
                 image_ori_rows = atoi(val2);
-                printf("Cols # = %d\n", image_ori_cols);
-                printf("Rows # = %d\n", image_ori_rows);
+                printf("Original #Cols # = %d\n", image_ori_cols);
+                printf("Original #Rows # = %d\n", image_ori_rows);
             } else {
                 strtok(line, " \t\n");
             }
@@ -345,8 +349,8 @@ int main(int argc, char *argv []){
 
     fprintf(fileResults, "\n┌———————————————————————————————————————————————— GLOBAL CONFIGURATIONS —————————————————————————————————————————————————┐");
     fprintf(fileResults, "\n│%36s%-35s%-1s%16d%35s"," ","Number of Rows","=", Nr,"│");
-    fprintf(fileResults, "\n│%36s%-35s%-1s%16d%35s"," ","Number of Attributes","=", Nc,"│");
-    fprintf(fileResults, "\n│%36s%-35s%-1s%16d%35s"," ","Number of Element","=", Ne,"│");
+    fprintf(fileResults, "\n│%36s%-35s%-1s%16d%35s"," ","Number of Columns","=", Nc,"│");
+    fprintf(fileResults, "\n│%36s%-35s%-1s%16d%35s"," ","Number of Elements","=", Ne,"│");
     fprintf(fileResults, "\n│%36s%-35s%-1s%16d%35s"," ","Number of Threads","=", threads,"│");
     fprintf(fileResults, "\n└————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————┘");
     
@@ -512,9 +516,9 @@ int main(int argc, char *argv []){
             memcpy(golden, image, sizeof(fp) * Ne);
             
         } else {
-            fprintf(fileResults,"………………………………………………………………………………………………………………………………………………………………………………………………………\n");
+            fprintf(fileResults,"…………………………………………………………………………………………………………………………………………………………………………………………………………\n");
             fprintf(fileResults,"\t\t\t\t\t\tImage difference: %f\n", image_distance(Ne, golden, image));
-            fprintf(fileResults,"………………………………………………………………………………………………………………………………………………………………………………………………………\n");
+            fprintf(fileResults,"…………………………………………………………………………………………………………………………………………………………………………………………………………\n");
         }
         
         //WRITE IMAGE AFTER PROCESSING
