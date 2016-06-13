@@ -1,1 +1,1 @@
-./srad 10 0.5 502 458 4
+./srad  "D:\Ceci\PoliMi\2. ACA\Project\Data\image.pgm" "D:\Ceci\PoliMi\2. ACA\Project\Data\config_srad_0.txt" 502 458 4
